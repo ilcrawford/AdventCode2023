@@ -15,24 +15,26 @@ using (StreamReader sr = File.OpenText(path))
 		Console.WriteLine(g);
 	}
 
-	Console.WriteLine("\n\rBAD\n\r");
+	Console.WriteLine("\n\r********************************\n\r");
 
-	var bad = (from g in games
-			   where g.Turns.Count(t => t.Red > 12 || t.Blue > 14 || t.Green > 13) > 0
-			   select g).ToList();
-
-	var good = games.ExceptBy(bad.Select(b => b.ID), z => z.ID).ToList();
-
-
-	Console.WriteLine();
-	Console.WriteLine("GOOD");
-
-	foreach (var g in good)
+	var x = (from g in games
+			 from t in g.Turns
+			 group t by g.ID into grp
+			 select new
+			 {
+				 ID = grp.Key,
+				 Red = grp.Max(t => t.Red),
+				 Green = grp.Max(t => t.Green),
+				 Blue = grp.Max(t => t.Blue),
+			 }).ToList();
+	var answer = 0;
+	foreach (var gx in x)
 	{
-		Console.WriteLine(g);
+		var xx = gx.Red * gx.Green * gx.Blue;
+		answer += xx;
+		Console.WriteLine($"Key {gx.ID}: XX {xx} - Red {gx.Red}, Green {gx.Green}, Blue {gx.Blue}");
 	}
 
-	var answer = good.Sum(g => g.ID);
 
 	Console.WriteLine($"Answer {answer}");
 
@@ -114,5 +116,3 @@ public class Turn
 	}
 
 }
-
-
