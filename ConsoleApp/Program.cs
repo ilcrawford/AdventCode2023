@@ -69,7 +69,7 @@ using (StreamReader sr = File.OpenText(path))
 					innumb = false;
 					if (c != '.')
 					{
-						numbyLis.Add(new Numby(new Point(x, y), new Point(x, y), -1));
+						numbyLis.Add(new Numby(new Point(x, y), new Point(x, y), (int)c * -1));
 					}
 					break;
 			}
@@ -94,6 +94,7 @@ using (StreamReader sr = File.OpenText(path))
 
 	var sl = (from n in numbyLis where n.isSymbol select n).ToList();
 	var nl = (from n in numbyLis where !n.isSymbol select n).ToList();
+	var gl = (from n in numbyLis where n.number == (int)'*' * -1 select n).ToList();
 
 	answer = (from n in nl
 			  from ss in sl
@@ -112,6 +113,28 @@ using (StreamReader sr = File.OpenText(path))
 
 	Console.WriteLine($"Answer loop {answer}");
 
+	answer = (
+		from g in gl
+		from n in nl
+		where g.NextTo(n)
+		group n by g into gs
+		where gs.Count() == 2
+		//select gs).ToList();
+		select new
+		{
+			key = gs.Key,
+			nbr1 = gs.ElementAt(0).number,
+			nbr2 = gs.ElementAt(1).number,
+			value = gs.ElementAt(0).number * gs.ElementAt(1).number
+		}).Sum(g => g.value);
+
+	//foreach (var n in t)
+	//{
+	//	//		Console.WriteLine(n);
+	//	Console.WriteLine($"Gear {n.key}  -- Nbr1 {n.nbr1}, Nbr2 {n.nbr2}, Value {n.value}");
+	//}
+	Console.WriteLine($"Day3.2 Answer {answer}");
+	// first guess 24908233
 }
 
 class Numby(Point p1, Point p2, int number)
