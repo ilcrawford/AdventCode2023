@@ -30,8 +30,8 @@ var test = @"Game 199: 1 red, 10 blue, 5 green; 11 blue, 6 green; 6 green; 1 gre
 
 List<string> list =
 [
-	"1.12...123",
-	".2........",
+	"1.12*123..",
+	".*........",
 	"#?.@.....#",
 ];
 
@@ -43,7 +43,7 @@ using (StreamReader sr = File.OpenText(path))
 	int answer = 0;
 	int x = 1, y = 1;
 	while ((s = sr.ReadLine()) != null)
-	// foreach (string s in list)
+	//foreach (string s in list)
 	{
 		Console.WriteLine(s);
 		var innumb = false;
@@ -131,10 +131,11 @@ using (StreamReader sr = File.OpenText(path))
 	//foreach (var n in t)
 	//{
 	//	//		Console.WriteLine(n);
-	//	Console.WriteLine($"Gear {n.key}  -- Nbr1 {n.nbr1}, Nbr2 {n.nbr2}, Value {n.value}");
+	//	Console.WriteLine($"Gear {n.Key}  -- Nbr1 {n.ElementAt(0).number}, Nbr2 {n.ElementAt(1).number}");
 	//}
 	Console.WriteLine($"Day3.2 Answer {answer}");
 	// first guess 24908233
+	// second guess 81997870
 }
 
 class Numby(Point p1, Point p2, int number)
@@ -146,7 +147,7 @@ class Numby(Point p1, Point p2, int number)
 
 	public bool NextTo(Numby nb)
 	{
-		return (Math.Abs(this.P1.Y - nb.P1.Y) <= 1 && (nb.P1.X >= this.P1.X - 1) && (nb.P1.X <= this.P2.X + 1));
+		return (Math.Abs(this.P1.Y - nb.P1.Y) <= 1 && (nb.P2.X >= this.P1.X - 1) && (nb.P1.X <= this.P2.X + 1));
 	}
 
 	public override string ToString()
