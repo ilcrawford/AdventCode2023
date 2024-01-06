@@ -26,12 +26,12 @@ List<string> list =
 
 using (StreamReader sr = File.OpenText(path))
 {
-	//string s = "";
+	string? s = "";
 	int answer = 0;
 	var cards = new List<Card>();
 
-	//while ((s = sr.ReadLine()) != null)
-	foreach (string s in list)
+	while ((s = sr.ReadLine()) != null)
+	//foreach (string s in list)
 	{
 		var i = s.IndexOf(':');
 		var name = s.Substring(0, i);
@@ -77,6 +77,7 @@ using (StreamReader sr = File.OpenText(path))
 			 }).ToArray();
 	answer = (from a in x select a.score).Sum();
 	Console.WriteLine($"Answer {answer}");
+	// Day4 guess 1 Answer 21485
 }
 
 Console.WriteLine("\n\r********************************\n\r");
